@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS cs353hw4db;
 USE cs353hw4db;
 CREATE TABLE User (id INT AUTO_INCREMENT PRIMARY KEY, password VARCHAR(255), username VARCHAR(255), email VARCHAR(255));
-CREATE TABLE Task (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), description TEXT(255), status VARCHAR(255), deadline DATETIME, creation_time DATETIME, done_time DATETIME, user_id INT, task_type VARCHAR(255));
+CREATE TABLE Task (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), description TEXT(255), status VARCHAR(255), deadline DATETIME, creation_time DATETIME, done_time DATETIME, user_id INT, task_type VARCHAR(255), FOREIGN KEY (user_id) REFERENCES User(id));
 CREATE TABLE TaskType (type VARCHAR(255));
+CREATE TABLE TaskTime (task_id INT, comp_time INT, FOREIGN KEY (task_id) REFERENCES Task (id) ON DELETE CASCADE)

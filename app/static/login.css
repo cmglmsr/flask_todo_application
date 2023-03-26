@@ -2,14 +2,9 @@ body {
     background-color: rgb(49, 49, 49);
     color: rgb(203, 213, 223);
     display:grid;
-    grid-template-columns: auto auto;
-}
-.tasks_table, td{
-    border: 1px solid;
-}
-
-.table_titles {
-    font-weight: bolder;
+    grid-template-columns: auto;
+    justify-content: center;
+    margin-top: 5%;
 }
 
 form {
@@ -19,8 +14,4 @@ form {
     display:grid;
     grid-template-columns: auto;
     gap: 2rem;
-}
-
-.analysis {
-
 }

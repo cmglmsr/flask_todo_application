@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="main">
-        <h1>Tasks</h1>
+        <h1>To-Do List</h1>
         <table class="tasks_table">
             <tbody>
                 <tr class="table_titles">
@@ -17,7 +17,6 @@
                     <td>Task Type</td>
                     <td>Deadline</td>
                     <td>Creation Time</td>
-                    <td>Done Time</td>
                     <td>Status</td>
                     
                 </tr>
@@ -28,7 +27,6 @@
                     <td class="task_row">{{task.task_type}}</td>
                     <td class="task_row">{{task.deadline}}</td>
                     <td class="task_row">{{task.creation_time}}</td>
-                    <td class="task_row">{{task.done_time}}</td>
                     <td class="task_row">{{task.status}}</td>
                     <td><form action="{{ url_for('done_task') }}" method="post">
                         <input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
@@ -79,6 +77,48 @@
             </div>
             <button type="submit"> Add Task </button>
         </form>
+        <h1>Completed Tasks</h1>
+        <table class="tasks_table">
+            <tbody>
+                <tr class="table_titles">
+                    <td>Title</td>
+                    <td>Description</td>
+                    <td>Task Type</td>
+                    <td>Deadline</td>
+                    <td>Creation Time</td>
+                    <td>Done Time</td>
+                    <td>Status</td>
+                    <td>Completion Time (seconds)</td>
+                    
+                </tr>
+                {%for task in done_list%}
+                <tr>
+                    <td class="task_row">{{task.title}}</td>
+                    <td class="task_row">{{task.description}}</td>
+                    <td class="task_row">{{task.task_type}}</td>
+                    <td class="task_row">{{task.deadline}}</td>
+                    <td class="task_row">{{task.creation_time}}</td>
+                    <td class="task_row">{{task.done_time}}</td>
+                    <td class="task_row">{{task.status}}</td>
+                    <td class="task_row">{{task.comp_time}}</td>
+                    <td><form action="{{ url_for('done_task') }}" method="post">
+                        <input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+                        <button type="submit"> Mark as Todo</button>
+                    </form>
+                    </td>
+                    <td><form action="{{ url_for('del_task') }}" method="post">
+                        <input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+                        <button type="submit"> Delete </button>
+                        </form>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <div class="analysis">
+        <a href="/analysis"><h1>Analysis Page >>></h1></a>
+        <a href="/logout"><h1>Logout >>></h1></a>
     </div>
 </body>
 </html>

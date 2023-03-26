@@ -2,9 +2,10 @@ body {
     background-color: rgb(49, 49, 49);
     color: rgb(203, 213, 223);
     display:grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto;
 }
 .tasks_table, td{
+    margin:10px;
     border: 1px solid;
 }
 
@@ -22,5 +23,9 @@ form {
 }
 
 .analysis {
+    border: 1px solid;
+}
 
+.avg {
+    margin: 10px;
 }

@@ -1,0 +1,2 @@
+USE cs353hw4db;
+INSERT INTO TaskTime (task_id,comp_time) VALUES (1, TIMESTAMPDIFF(SECOND, '2012-06-06 13:13:55', '2012-06-06 15:20:18'));

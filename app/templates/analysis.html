@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ANALYSIS PAGE</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='analysis.css') }}">
+</head>
+<body>
+    <h1>ANALYSIS PAGE</h1>
+    <div class="analysis">
+        <h2>1) Title and latency of the tasks that were completed after their deadlines</h2>
+        <table class="tasks_table">
+            <tbody>
+                <tr class="table_titles">
+                    <td>Title</td>
+                    <td>Latency</td>
+                </tr>
+                {%for task in analysis_list_1%}
+                <tr>
+                    <td class="task_row">{{task.title}}</td>
+                    <td class="task_row">{{task.latency}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <div class="analysis">
+        <h2>2) Average task completion time</h2>
+        <h3 class="avg">{{avg}} seconds</h3>
+    </div>
+    <div class="analysis">
+        <h2>3) Number of completed tasks per task type</h2>
+        <table class="tasks_table">
+            <tbody>
+                <tr class="table_titles">
+                    <td>Task Type</td>
+                    <td>Count</td>
+                </tr>
+                {%for task in count%}
+                <tr>
+                    <td class="task_row">{{task.task_type}}</td>
+                    <td class="task_row">{{task.cnt}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <div class="analysis">
+        <h2>4) Title and deadline of uncompleted tasks </h2>
+        <table class="tasks_table">
+            <tbody>
+                <tr class="table_titles">
+                    <td>Title</td>
+                    <td>Deadline</td>
+                </tr>
+                {%for task in unc%}
+                <tr>
+                    <td class="task_row">{{task.title}}</td>
+                    <td class="task_row">{{task.deadline}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <div class="analysis">
+        <h2>5) Title and task completion time of the top 2 completed tasks that took the most time</h2>
+        <table class="tasks_table">
+            <tbody>
+                <tr class="table_titles">
+                    <td>Title</td>
+                    <td>Completion Time</td>
+                </tr>
+                {%for task in most%}
+                <tr>
+                    <td class="task_row">{{task.title}}</td>
+                    <td class="task_row">{{task.comp_time}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

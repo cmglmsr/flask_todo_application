@@ -64,9 +64,11 @@ def register():
 @app.route('/tasks', methods =['GET'])
 def tasks():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM Task ORDER BY deadline ASC')
+    cursor.execute("SELECT * FROM Task WHERE status='Todo' AND user_id={} ORDER BY deadline ASC".format(int(session['userid'])))
     tasks_list = cursor.fetchall()
-    return render_template('tasks.html', tasks_list=tasks_list)
+    cursor.execute("SELECT DISTINCT * FROM Task INNER JOIN TaskTime ON Task.id = TaskTime.task_id WHERE user_id={} and status = 'Done' ORDER BY comp_time ASC".format(int(session['userid'])))
+    done_list = cursor.fetchall()
+    return render_template('tasks.html', tasks_list=tasks_list, done_list=done_list)
 
 @app.route('/tasks', methods=['POST'])
 def add_task():
@@ -85,7 +87,7 @@ def add_task():
     mysql.connection.commit()
     cursor.execute('SELECT * FROM Task ORDER BY deadline ASC')
     tasks_list = cursor.fetchall()
-    return render_template('tasks.html', tasks_list=tasks_list)
+    return redirect(url_for('tasks'))
 
 @app.route('/tasks/delete', methods=['POST'])
 def del_task():
@@ -136,19 +138,56 @@ def done_task():
     else:
         cursor.execute("UPDATE Task SET status = 'Done' WHERE id={}".format(task_id))
         cursor.execute("UPDATE Task SET done_time = '{}' WHERE id={}".format(datetime.now(),task_id))
+        cursor.execute("SELECT TIMESTAMPDIFF(SECOND, Task.creation_time, Task.done_time) as comp_time FROM Task WHERE id={}".format(task_id))
+        comp_time = cursor.fetchone()["comp_time"]
+        cursor.execute("SELECT * FROM TaskTime WHERE task_id={}".format(task_id))
+        task_time = cursor.fetchone()
+        if task_time:
+            cursor.execute("UPDATE TaskTime SET comp_time={} WHERE task_id={}".format(int(comp_time), task_id))
+        else:
+            cursor.execute("INSERT INTO TaskTime (task_id,comp_time) VALUES ({}, {})".format(task_id, int(comp_time)))
     mysql.connection.commit()
     return redirect(url_for('tasks'))
 
-@app.route('/analysis', methods =['GET', 'POST'])
+@app.route('/analysis', methods =['GET'])
 def analysis():
-    return "Analysis page"
 
+    userid = session['userid']
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
+    # ANALYSIS 1
+    cursor.execute("SELECT title, TIMESTAMPDIFF(SECOND, Task.deadline, Task.done_time) AS latency FROM Task WHERE TIMESTAMPDIFF(SECOND, Task.deadline, Task.done_time)> 0 AND user_id={} ORDER BY latency ASC".format(userid))
+    analysis_list_1 = cursor.fetchall()
+
+    # ANALYSIS 2
+    cursor.execute("SELECT AVG(comp_time) AS avrg FROM TaskTime INNER JOIN Task ON TaskTime.task_id = Task.id WHERE user_id={}".format(userid))
+    avg = cursor.fetchone()['avrg']
+
+    # ANALYSIS 3
+    cursor.execute("SELECT task_type, COUNT(*) AS cnt FROM Task WHERE user_id={} AND status='Done' GROUP BY task_type".format(userid))
+    count = cursor.fetchall()
+
+    # ANALYSIS 4
+    cursor.execute("SELECT title, deadline FROM Task WHERE status='Todo' AND user_id={} ORDER BY deadline ASC".format(userid))
+    unc = cursor.fetchall()
+
+    # ANALYSIS 5
+    cursor.execute("SELECT title, comp_time FROM TaskTime INNER JOIN Task ON TaskTime.task_id = Task.id WHERE user_id={} AND status='Done' ORDER BY comp_time DESC LIMIT 2".format(userid))
+    most = cursor.fetchall()
+
+    return render_template('analysis.html', analysis_list_1=analysis_list_1, avg=avg, count=count, unc=unc, most=most)
+
+@app.route("/logout")
+def logout():
+    session.pop('loggedin')
+    session.pop('userid')
+    session.pop('username')
+    session.pop('email')
+    return redirect("/login")
 """
 TODO
-1 - show the completed tasks separately in main page, sorted by their completion time
-2 - make tasks special to users
-3 - analysis page
+1 - make edit in same page
+2 - input validation
 """
 
 if __name__ == "__main__":
