@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MAIN PAGE</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='tasks.css') }}">
+</head>
+<body>
+    <div class="main">
+        <h1>Tasks</h1>
+        <table class="tasks_table">
+            <tbody>
+                <tr class="table_titles">
+                    <td>Title</td>
+                    <td>Description</td>
+                    <td>Task Type</td>
+                    <td>Deadline</td>
+                    <td>Creation Time</td>
+                    <td>Done Time</td>
+                    <td>Status</td>
+                    
+                </tr>
+                {%for task in tasks_list%}
+                <tr>
+                    <td class="task_row">{{task.title}}</td>
+                    <td class="task_row">{{task.description}}</td>
+                    <td class="task_row">{{task.task_type}}</td>
+                    <td class="task_row">{{task.deadline}}</td>
+                    <td class="task_row">{{task.creation_time}}</td>
+                    <td class="task_row">{{task.done_time}}</td>
+                    <td class="task_row">{{task.status}}</td>
+                    <td><form action="{{ url_for('done_task') }}" method="post">
+                        <input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+                        <button type="submit"> Mark as Done</button>
+                    </form>
+                    </td>
+                    <td><form action="/tasks/edit" method="get">
+                        <input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+                        <button type="submit"> Edit </button>
+                    </form>
+                    </td>
+                    <td><form action="{{ url_for('del_task') }}" method="post">
+                        <input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+                        <button type="submit"> Delete </button>
+                        </form>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        <h1>Add Task</h1>
+        <!-- check if all inputs are filled -->
+        <form action="/tasks" id="taskform" method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter task name">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" class="form-control" id="description" name="description" placeholder="Enter description">
+            </div>
+            <div class="form-group">
+                <label for="deadline">Deadline:</label>
+                <input type="datetime-local" id="deadline" name="deadline"
+                    value="2023-03-25"
+                    min="2023-01-01" max="2029-1-1">
+            </div>
+            <div class="form-group">
+                <label for="type">Choose task type:</label>
+                <select id="type" name="tasktypes" form="taskform">
+                    <!-- fetch dynamically from database -->
+                    <option value="Health">Health</option>
+                    <option value="Job">Job</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                    <option value="Family">Family</option>
+                    <option value="Hobbies">Hobbies</option>
+                </select>
+            </div>
+            <button type="submit"> Add Task </button>
+        </form>
+    </div>
+</body>
+</html>

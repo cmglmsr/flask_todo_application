@@ -1,0 +1,20 @@
+body {
+    background-color: rgb(49, 49, 49);
+    color: rgb(203, 213, 223);
+}
+.tasks_table, td{
+    border: 1px solid;
+}
+
+.table_titles {
+    font-weight: bolder;
+}
+
+form {
+    border: 1px solid;
+    width:fit-content;
+    box-sizing: border-box;
+    display:grid;
+    grid-template-columns: auto;
+    gap: 2rem;
+}
