@@ -3,6 +3,7 @@ body {
     color: rgb(203, 213, 223);
     display:grid;
     grid-template-columns: auto;
+    margin: 2%;
 }
 .tasks_table, td{
     margin:10px;

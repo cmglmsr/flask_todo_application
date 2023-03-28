@@ -5,13 +5,22 @@ body {
     grid-template-columns: auto;
     justify-content: center;
     margin-top: 5%;
+    margin-right: 10%;
 }
 
 form {
     border: 1px solid;
-    width:fit-content;
+    width:200%;
     box-sizing: border-box;
     display:grid;
     grid-template-columns: auto;
     gap: 2rem;
+    justify-content: center;
+}
+
+.form-group {
+    text-align: center;
+    font-size: larger;
+    display: grid;
+    gap: 5px;
 }

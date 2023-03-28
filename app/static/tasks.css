@@ -3,6 +3,7 @@ body {
     color: rgb(203, 213, 223);
     display:grid;
     grid-template-columns: auto auto;
+    margin: 2%;
 }
 .tasks_table, td{
     border: 1px solid;
@@ -21,6 +22,16 @@ form {
     gap: 2rem;
 }
 
-.analysis {
+a {
+    color:aqua;
+}
 
+h1 {
+    color: aqua;
+}
+
+.message {
+    color: red;
+    text-align: center;
+    margin: 0;
 }

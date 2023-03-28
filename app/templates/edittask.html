@@ -22,7 +22,6 @@
         <div class="form-group">
             <label for="type">Choose task type:</label>
             <select id="type" name="tasktypes" form="taskform">
-                <!-- fetch dynamically from database -->
                 <option value="Health">Health</option>
                 <option value="Job">Job</option>
                 <option value="Lifestyle">Lifestyle</option>
@@ -31,6 +30,8 @@
             </select>
         </div>
         <button type="submit"> Edit Task </button>
+        
     </form>
+    <p>Note: Empty form values do not modify the contents of a task.</p>
 </div>
 </body>

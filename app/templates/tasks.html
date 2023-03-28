@@ -48,7 +48,6 @@
             </tbody>
         </table>
         <h1>Add Task</h1>
-        <!-- check if all inputs are filled -->
         <form action="/tasks" id="taskform" method="post">
             <div class="form-group">
                 <label for="name">Name:</label>
@@ -67,15 +66,15 @@
             <div class="form-group">
                 <label for="type">Choose task type:</label>
                 <select id="type" name="tasktypes" form="taskform">
-                    <!-- fetch dynamically from database -->
-                    <option value="Health">Health</option>
-                    <option value="Job">Job</option>
-                    <option value="Lifestyle">Lifestyle</option>
-                    <option value="Family">Family</option>
-                    <option value="Hobbies">Hobbies</option>
+                    {%for type in task_types%}
+                    <option value="{{type.type}}">{{type.type}}</option>
+                    {%endfor%}
                 </select>
             </div>
+
+            <p class="message">{{message}}</p>
             <button type="submit"> Add Task </button>
+            
         </form>
         <h1>Completed Tasks</h1>
         <table class="tasks_table">
@@ -88,7 +87,7 @@
                     <td>Creation Time</td>
                     <td>Done Time</td>
                     <td>Status</td>
-                    <td>Completion Time (seconds)</td>
+                    <td>Completion Time (hours)</td>
                     
                 </tr>
                 {%for task in done_list%}
